@@ -2,7 +2,7 @@ package com.employeleave.requestemployeleave.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-
+//ini models position
 @Entity
 @Table(name = "position",schema = "public")
 public class Position {

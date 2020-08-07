@@ -6,6 +6,7 @@ import com.io.iona.springboot.controllers.HibernateCRUDController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//ini controler
 @RestController
 @RequestMapping("api/position")
 public class PositionController extends HibernateCRUDController <Position, PositionDTO> {

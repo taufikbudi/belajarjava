@@ -1,7 +1,7 @@
 package com.employeleave.requestemployeleave.dto;
 
 import java.sql.Timestamp;
-
+// ini positionDTO
 public class PositionDTO {
     private Long id;
     private Long positionId;
