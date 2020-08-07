@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //ini controler
 //test 1
+//test2
 @RestController
 @RequestMapping("api/position")
 public class PositionController extends HibernateCRUDController <Position, PositionDTO> {
