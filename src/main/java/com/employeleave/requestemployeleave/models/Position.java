@@ -3,15 +3,17 @@ package com.employeleave.requestemployeleave.models;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
 @Entity
 @Table(name = "position",schema = "public")
 
+
 public class Position {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "position_id_seq")
+
     private Long id;
+
     @Column(name = "position_id")
+
     private Long positionId;
     @Column(name = "position_name")
     private String positionName;
