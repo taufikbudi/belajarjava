@@ -5,6 +5,7 @@ import com.io.iona.springboot.controllers.HibernateCRUDController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//test dulu
 @RestController
 @RequestMapping("api/bucketapproval")
 public class BucketApprovalController extends HibernateCRUDController<BucketApproval,BucketApproval> {
