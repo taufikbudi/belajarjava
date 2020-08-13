@@ -9,7 +9,9 @@ import java.sql.Timestamp;
 
 
 public class Position {
-
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "position_id_seq")
     private Long id;
 
     @Column(name = "position_id")
