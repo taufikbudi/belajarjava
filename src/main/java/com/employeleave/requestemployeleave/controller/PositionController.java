@@ -6,6 +6,7 @@ import com.io.iona.springboot.controllers.HibernateCRUDController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //ini controler
 //test 1
@@ -13,5 +14,5 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("api/position")
-public class PositionController extends HibernateCRUDController <Position, PositionDTO> {
+public class PositionController extends  HibernateCRUDController <Position, PositionDTO> {
 }
