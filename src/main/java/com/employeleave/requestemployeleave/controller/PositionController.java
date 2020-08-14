@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //ini controler
 //test 1
 //test2
-@CrossOrigin
+
 @RestController
 @RequestMapping("api/position")
 public class PositionController extends  HibernateCRUDController <Position, PositionDTO> {
