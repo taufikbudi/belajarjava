@@ -15,6 +15,7 @@ public class User implements java.io.Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "user_id_seq")
+    @SequenceGenerator(name = "generator_users_id_seq", sequenceName = "users_id_seq", schema = "public", allocationSize = 1)
     private Long id;
     @Column(name = "user_id")
     private Long userId;
@@ -43,6 +44,11 @@ public class User implements java.io.Serializable {
     @Column(name = "leave_balance")
     private Long leaveBalance;
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "user_id_seq")
+    @SequenceGenerator(name = "generator_users_id_seq", sequenceName = "users_id_seq", schema = "public", allocationSize = 1)
+
     public Long getId() {
         return id;
     }
@@ -50,6 +56,8 @@ public class User implements java.io.Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 
     public Long getUserId() {
         return userId;
@@ -74,6 +82,7 @@ public class User implements java.io.Serializable {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
 
     public Long getPositionId() {
         return positionId;
