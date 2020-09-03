@@ -2,48 +2,56 @@ package com.employeleave.requestemployeleave.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "position",schema = "public")
 
 
-public class Position {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "position_id_seq")
-    private Long id;
-
-    @Column(name = "position_id")
-
-    private Long positionId;
-    @Column(name = "position_name")
+public class Position  implements java.io.Serializable{
+    private long positionId;
     private String positionName;
-    @Column(name = "created_by")
     private String createdBy;
-    @Column(name = "updated_by")
+    private Date createdDate;
     private String updatedBy;
-    @Column(name = "created_date")
-    private Timestamp createdDate;
-    @Column(name = "updated_date")
-    private Timestamp updatedDate;
+    private Date updatedDate;
+    private Set<User> userses = new HashSet<User>(0);
+    private Set<PositionLeave> positionLeaves = new HashSet<PositionLeave>(0);
 
-    public Long getId() {
-        return id;
+    public Position() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Position(long positionId, String positionName) {
+        this.positionId = positionId;
+        this.positionName = positionName;
     }
 
-    public Long getPositionId() {
+    public Position(long positionId, String positionName, String createdBy, Date createdDate, String updatedBy,
+                     Date updatedDate, Set<User> userses, Set<PositionLeave> positionLeaves) {
+        this.positionId = positionId;
+        this.positionName = positionName;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.updatedBy = updatedBy;
+        this.updatedDate = updatedDate;
+        this.userses = userses;
+        this.positionLeaves = positionLeaves;
+    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_position_id_seq")
+    @SequenceGenerator(name = "generator_position_id_seq", sequenceName = "position_id_seq", schema = "public", allocationSize = 1)
+    @Column(name = "position_id", unique = true, nullable = false)
+    public long getPositionId() {
         return positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         this.positionId = positionId;
     }
-
+    @Column(name = "position_name", nullable = false, length = 50)
     public String getPositionName() {
         return positionName;
     }
@@ -51,7 +59,7 @@ public class Position {
     public void setPositionName(String positionName) {
         this.positionName = positionName;
     }
-
+    @Column(name = "created_by", length = 50)
     public String getCreatedBy() {
         return createdBy;
     }
@@ -59,7 +67,16 @@ public class Position {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_date", length = 13)
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+    @Column(name = "updated_by")
     public String getUpdatedBy() {
         return updatedBy;
     }
@@ -67,20 +84,29 @@ public class Position {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
-
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Timestamp getUpdatedDate() {
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_date", length = 13)
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Timestamp updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")
+    public Set<User> getUserses() {
+        return userses;
+    }
+
+    public void setUserses(Set<User> userses) {
+        this.userses = userses;
+    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")
+    public Set<PositionLeave> getPositionLeaves() {
+        return positionLeaves;
+    }
+
+    public void setPositionLeaves(Set<PositionLeave> positionLeaves) {
+        this.positionLeaves = positionLeaves;
     }
 }

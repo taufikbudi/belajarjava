@@ -5,48 +5,71 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 
 @Entity
 @Table(name = "user_leave_request",schema = "public")
 public class UserLeaveRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "user_leave_request_id_seq")
-    @Column(name = "id")
     private Long id;
-    @Column(name = "user_leave_request_id")
-
     private Long userLeaveRequestId;
-    @Column(name = "user_id")
     private Long userId;
-    @Column(name = "leave_date_from")
-    private Timestamp leaveDateFrom;
-
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @Column(name = "leave_date_to")
-    private Timestamp leaveDateTo;
-
-    @Column(name = "description")
+    private User user;
+    private Date leaveDateFrom;
+    private Date leaveDateTo;
     private String description;
-    @Column(name = "status")
     private String status;
-
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "leave_request_date", length = 13)
-    private java.util.Date leaveRequestDate;
-
-    @Column(name = "created_by")
+    private Date leaveRequestDate;
     private String createdBy;
-
-    @Column(name="created_date", nullable=true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private java.sql.Timestamp createdDate;
-
-    @Column(name = "updated_by")
+    private Date createdDate;
     private String updatedBy;
-    @Column(name = "leave_day_remaining")
-    private Long leaveDayRemaining;
+    private Date updatedDate;
+    private Short leaveDayRemaining;
+    private Set<BucketApproval> bucketApprovals = new HashSet<BucketApproval>(0);
 
+    public UserLeaveRequest() {
+    }
+
+    public UserLeaveRequest(long userLeaveRequestId, User user) {
+        this.userLeaveRequestId = userLeaveRequestId;
+        this.user = user;
+    }
+
+    public UserLeaveRequest(long userLeaveRequestId, User user, Date leaveDateFrom, Date leaveDateTo,
+                            String description, String status, Date leaveRequestDate, String createdBy, Timestamp createdDate,
+                            String updatedBy, Date updatedDate, Short leaveDayRemaining, Set<BucketApproval> bucketApprovals) {
+        this.userLeaveRequestId = userLeaveRequestId;
+        this.user = user;
+        this.leaveDateFrom = leaveDateFrom;
+        this.leaveDateTo = leaveDateTo;
+        this.description = description;
+        this.status = status;
+        this.leaveRequestDate = leaveRequestDate;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.updatedBy = updatedBy;
+        this.updatedDate = updatedDate;
+        this.leaveDayRemaining = leaveDayRemaining;
+        this.bucketApprovals = bucketApprovals;
+    }
+    @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;
     }
@@ -54,7 +77,10 @@ public class UserLeaveRequest {
     public void setId(Long id) {
         this.id = id;
     }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_user_leave_request_id_seq")
+    @SequenceGenerator(name = "generator_user_leave_request_id_seq", sequenceName = "user_leave_request_id_seq", schema = "public", allocationSize = 1)
+    @Column(name = "user_leave_request_id", unique = true, nullable = false)
     public Long getUserLeaveRequestId() {
         return userLeaveRequestId;
     }
@@ -63,31 +89,38 @@ public class UserLeaveRequest {
         this.userLeaveRequestId = userLeaveRequestId;
     }
 
-    public Long getUserId() {
-        return userId;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    public User getUser() {
+        return this.user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Timestamp getLeaveDateFrom() {
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "leave_date_from", length = 13)
+    public Date getLeaveDateFrom() {
         return leaveDateFrom;
     }
 
-    public void setLeaveDateFrom(Timestamp leaveDateFrom) {
+    public void setLeaveDateFrom(Date leaveDateFrom) {
         this.leaveDateFrom = leaveDateFrom;
     }
-
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    public Timestamp getLeaveDateTo() {
+    @Temporal(TemporalType.DATE)
+    @Column(name = "leave_date_to", length = 13)
+    public Date getLeaveDateTo() {
         return leaveDateTo;
     }
 
-    public void setLeaveDateTo(Timestamp leaveDateTo) {
+    public void setLeaveDateTo(Date leaveDateTo) {
         this.leaveDateTo = leaveDateTo;
     }
-
+    @Column(name = "description", length = 255)
     public String getDescription() {
         return description;
     }
@@ -96,6 +129,7 @@ public class UserLeaveRequest {
         this.description = description;
     }
 
+    @Column(name = "status", length = 255)
     public String getStatus() {
         return status;
     }
@@ -104,14 +138,17 @@ public class UserLeaveRequest {
         this.status = status;
     }
 
-    public java.util.Date getLeaveRequestDate() {
+    @Temporal(TemporalType.DATE)
+    @Column(name = "leave_request_date", length = 13)
+    public Date getLeaveRequestDate() {
         return leaveRequestDate;
     }
 
-    public void setLeaveRequestDate(java.util.Date leaveRequestDate) {
+    public void setLeaveRequestDate(Date leaveRequestDate) {
         this.leaveRequestDate = leaveRequestDate;
     }
 
+    @Column(name = "created_by", length = 50)
     public String getCreatedBy() {
         return createdBy;
     }
@@ -119,17 +156,16 @@ public class UserLeaveRequest {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss", timezone="UTC")
-    public java.sql.Timestamp getCreatedDate() {
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_date", length = 13)
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
-
+    @Column(name = "updated_by", length = 255)
     public String getUpdatedBy() {
         return updatedBy;
     }
@@ -137,12 +173,30 @@ public class UserLeaveRequest {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_date", length = 13)
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
 
-    public Long getLeaveDayRemaining() {
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    @Column(name = "leave_day_remaining")
+    public Short getLeaveDayRemaining() {
         return leaveDayRemaining;
     }
 
-    public void setLeaveDayRemaining(Long leaveDayRemaining) {
+    public void setLeaveDayRemaining(Short leaveDayRemaining) {
         this.leaveDayRemaining = leaveDayRemaining;
+    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userLeaveRequest")
+    public Set<BucketApproval> getBucketApprovals() {
+        return bucketApprovals;
+    }
+
+    public void setBucketApprovals(Set<BucketApproval> bucketApprovals) {
+        this.bucketApprovals = bucketApprovals;
     }
 }
